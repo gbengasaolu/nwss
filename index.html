@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding the Wastewater Viral Activity Level (WVAL) | NWSS Learning Course</title>
+<meta name="description" content="A friendly, interactive course that explains the CDC Wastewater Viral Activity Level (WVAL): what it is, how it is calculated, how to read it, and why it matters.">
+<style>
+:root{
+  --navy:#14355f; --navy2:#1f4c86; --green:#2e9d54; --green2:#e6f5ec; --ink:#1d2a3a; --muted:#5a6b80;
+  --bg:#f3f7fb; --card:#ffffff; --line:#dbe5f0; --gold:#f2b134;
+  --c0:#cdeee3; --c1:#b3e19c; --c2:#fba33a; --c3:#f25c54; --c4:#9b2a6a;
+  --r:18px; --shadow:0 6px 22px rgba(20,53,95,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;font-size:18px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--navy);line-height:1.2;margin:0 0 .5em}
+h2{font-size:2rem} h3{font-size:1.35rem}
+p{margin:.6em 0}
+a{color:var(--navy2)}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* top nav */
+header.top{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(20,53,95,.06)}
+.top .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brand svg{width:46px;height:46px}
+.brand b{font-size:.62rem;letter-spacing:.06em;color:var(--navy);line-height:1.1;text-transform:uppercase;font-weight:800;display:block}
+nav.mods{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none}
+nav.mods::-webkit-scrollbar{display:none}
+nav.mods a{white-space:nowrap;text-decoration:none;font-size:.82rem;font-weight:600;color:var(--navy);padding:7px 11px;border-radius:99px;transition:.2s}
+nav.mods a:hover{background:var(--green2)}
+nav.mods a.on{background:var(--navy);color:#fff}
+nav.mods a.done::after{content:" ✓";color:var(--green)}
+nav.mods a.on.done::after{color:#9ff0b9}
+#bar{position:absolute;left:0;bottom:-1px;height:4px;width:0;background:linear-gradient(90deg,var(--green),var(--navy2));transition:width .15s}
+
+/* hero */
+.hero{background:radial-gradient(1200px 500px at 85% -10%,#2a6bb4 0,transparent 60%),linear-gradient(135deg,#0f2a4d,#14355f 55%,#1a4a7e);color:#fff;padding:54px 0 70px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;background:var(--bg);clip-path:ellipse(60% 100% at 50% 100%)}
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.hero h1{color:#fff;font-size:2.7rem}
+.hero .kicker{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:4px 14px;border-radius:99px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.hero p.lead{font-size:1.2rem;color:#dbe8f7;max-width:34em}
+.btn{display:inline-block;background:var(--green);color:#fff;border:0;padding:13px 26px;border-radius:99px;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(0,0,0,.25);transition:.2s}
+.btn:hover{transform:translateY(-2px);background:#25873f}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.6);box-shadow:none;margin-left:8px}
+.btn.sm{padding:8px 18px;font-size:.9rem;box-shadow:none}
+.btn.navy{background:var(--navy)} .btn.navy:hover{background:var(--navy2)}
+.heroGauge{background:#fff;border-radius:24px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.3);color:var(--ink)}
+.heroGauge h3{font-size:1.1rem;text-align:center;margin-bottom:0}
+.heroGauge .hint{font-size:.85rem;color:var(--muted);text-align:center;margin:0}
+.facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.facts span{background:rgba(255,255,255,.12);border-radius:12px;padding:8px 14px;font-size:.9rem}
+
+/* sections */
+section.mod{padding:56px 0 20px}
+.modhead{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.num{flex:none;width:54px;height:54px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:Georgia,serif;font-size:1.6rem;font-weight:700;border:4px solid var(--green)}
+.modhead h2{margin:0}
+.listen{margin-left:auto;background:#fff;border:2px solid var(--line);border-radius:99px;padding:6px 14px;font-size:.85rem;font-weight:600;color:var(--navy)}
+.listen:hover{border-color:var(--green)}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:26px;margin:18px 0;border:1px solid var(--line)}
+.card.tint{background:linear-gradient(180deg,#f4fbf7,#fff);border-color:#cfe9d9}
+.story{font-size:1.15rem}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.threecol{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mini{background:#f7fafd;border:1px solid var(--line);border-radius:14px;padding:16px}
+.mini .ic{font-size:2rem}
+.tag{display:inline-block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:99px;background:var(--navy);color:#fff}
+.tag.g{background:var(--green)}
+.big{font-size:1.25rem;font-weight:700;color:var(--navy)}
+.callout{border-left:6px solid var(--green);background:var(--green2);padding:14px 18px;border-radius:0 14px 14px 0;margin:16px 0}
+.callout.warn{border-color:var(--gold);background:#fff7e3}
+.callout.blue{border-color:var(--navy2);background:#eaf2fc}
+details.sci{border:1px dashed var(--navy2);border-radius:14px;padding:10px 16px;margin:16px 0;background:#fbfdff}
+details.sci summary{cursor:pointer;font-weight:700;color:var(--navy2)}
+details.sci[open] summary{margin-bottom:6px}
+abbr.g{text-decoration:underline dotted var(--green);text-underline-offset:3px;cursor:help;position:relative}
+abbr.g:hover::after,abbr.g:focus::after{content:attr(data-tip);position:absolute;left:0;top:125%;width:240px;background:var(--navy);color:#fff;font-size:.82rem;line-height:1.4;padding:8px 10px;border-radius:10px;z-index:20;font-weight:400;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+
+/* pipeline story */
+.flow{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;margin:16px 0}
+.flow .node{flex:1;min-width:120px;background:#f2f8ff;border:2px solid var(--line);border-radius:14px;padding:12px;text-align:center;font-size:.95rem;cursor:pointer;transition:.2s}
+.flow .node:hover,.flow .node.sel{border-color:var(--green);background:var(--green2);transform:translateY(-3px)}
+.flow .node .ic{font-size:2rem;display:block}
+.flow .arr{align-self:center;color:var(--green);font-size:1.6rem;font-weight:700}
+#flowText{min-height:3.2em}
+
+/* tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{background:#eef3f9;border:2px solid transparent;border-radius:99px;padding:8px 18px;font-weight:700;color:var(--navy)}
+.tabs button.on{background:var(--navy);color:#fff}
+.tabs button:hover:not(.on){border-color:var(--green)}
+.pane{display:none}.pane.on{display:block;animation:fade .35s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+/* steps */
+.stepnav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.stepnav button{flex:1;min-width:92px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 6px;font-size:.82rem;font-weight:700;color:var(--navy)}
+.stepnav button b{display:block;font-size:1.25rem;font-family:Georgia,serif}
+.stepnav button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.stepnav button.seen:not(.on){border-color:var(--green)}
+.stepfoot{display:flex;justify-content:space-between;margin-top:18px}
+.demo{background:#f7fafd;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px}
+.demo h4{margin:0 0 8px;color:var(--navy);font-size:1rem;text-transform:uppercase;letter-spacing:.06em}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:2px solid var(--line);background:#fff;border-radius:12px;padding:9px 13px;font-size:.92rem;transition:.15s;text-align:left}
+.chip:hover{border-color:var(--navy2)}
+.chip.pick{border-color:var(--navy2);background:#e8f1fc}
+.chip.ok{border-color:var(--green);background:var(--green2)}
+.chip.no{border-color:var(--c3);background:#fdeceb}
+.chip small{display:block;color:var(--muted);font-size:.78rem}
+input[type=range]{width:100%;accent-color:var(--green);height:28px}
+label.lab{display:flex;justify-content:space-between;font-weight:700;font-size:.92rem;color:var(--navy)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:170px;border-bottom:3px solid var(--navy);padding:0 6px;position:relative}
+.bars .b{flex:1;background:linear-gradient(180deg,var(--navy2),var(--navy));border-radius:6px 6px 0 0;position:relative;transition:height .5s,opacity .4s;min-width:12px}
+.bars .b span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:.7rem;color:var(--muted);white-space:nowrap}
+.bars .b.out{background:linear-gradient(180deg,var(--c3),#c23a33)}
+.bars .b.cap{background:linear-gradient(180deg,var(--gold),#d99414)}
+.bars .b.gone{opacity:.1}
+.capline{position:absolute;left:0;right:0;border-top:3px dashed var(--c3);font-size:.72rem;color:var(--c3);font-weight:700;transition:bottom .5s}
+.dots{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+.dot{width:40px;height:40px;border-radius:50%;background:var(--navy2);color:#fff;display:grid;place-items:center;font-size:.75rem;font-weight:700;transition:.4s}
+.dot.low{background:var(--c1);color:#134}
+.dot.base{background:var(--green);outline:4px solid #bfe9cd}
+.formula{font-family:Georgia,serif;font-size:1.45rem;text-align:center;background:#fff;border:2px solid var(--navy);border-radius:16px;padding:14px;margin:10px 0}
+.formula .fr{display:inline-block;vertical-align:middle;text-align:center}
+.formula .fr i{display:block;font-style:normal;padding:0 8px}
+.formula .fr i:first-child{border-bottom:2px solid var(--navy)}
+.result{font-size:2rem;font-weight:800;color:var(--navy);text-align:center;font-family:Georgia,serif}
+.pill{display:inline-block;padding:4px 14px;border-radius:99px;font-weight:800;color:#fff}
+.pill.c0{background:#5fbfa3}.pill.c1{background:#6bb94f}.pill.c2{background:#f08a00}.pill.c3{background:#e03c35}.pill.c4{background:#9b2a6a}
+
+/* table */
+table.th{width:100%;border-collapse:separate;border-spacing:0;font-size:.92rem;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+table.th th,table.th td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line)}
+table.th th{color:#fff;font-weight:800}
+table.th th:nth-child(2){background:#5fbfa3}table.th th:nth-child(3){background:#6bb94f}table.th th:nth-child(4){background:#f08a00}table.th th:nth-child(5){background:#e03c35}table.th th:nth-child(6){background:#9b2a6a}
+table.th th:first-child{background:var(--navy)}
+table.th td:first-child{font-weight:800;color:var(--navy);text-align:left;background:#f4f8fc}
+table.th td.hl{background:#fff3c4;font-weight:800;outline:2px solid var(--gold);outline-offset:-2px}
+table.th tr:last-child td{border-bottom:0}
+
+/* tree */
+.tree{display:grid;gap:14px}
+.lvl{border-radius:14px;padding:12px 14px;border:2px solid var(--line);background:#fff}
+.lvl h4{margin:0 0 6px;font-size:.85rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.grp{flex:1;min-width:230px;border-radius:12px;background:#f7fafd;border:1px solid var(--line);padding:10px}
+.grp b{color:var(--navy)}
+.site{display:grid;grid-template-columns:62px 1fr 46px;gap:6px;align-items:center;font-size:.8rem}
+.val{font-weight:800;text-align:right;padding:2px 6px;border-radius:8px;color:#fff;font-size:.8rem;text-align:center}
+
+/* timeline */
+.year{position:relative;height:90px;margin:16px 6px 30px}
+.year .line{position:absolute;left:0;right:0;top:40px;height:10px;border-radius:9px;background:linear-gradient(90deg,#cfe2f6,#cfe2f6)}
+.year .mo{position:absolute;top:56px;font-size:.7rem;color:var(--muted);transform:translateX(-50%)}
+.pin{position:absolute;top:8px;transform:translateX(-50%);background:var(--navy);color:#fff;border:0;border-radius:10px;padding:5px 9px;font-size:.78rem;font-weight:700}
+.pin::after{content:"";position:absolute;left:50%;bottom:-8px;border:6px solid transparent;border-top-color:var(--navy);transform:translateX(-50%)}
+.pin.cv{background:var(--c4)}.pin.cv::after{border-top-color:var(--c4)}
+.pin.fl{background:var(--green)}.pin.fl::after{border-top-color:var(--green)}
+.pin.on{outline:3px solid var(--gold)}
+
+/* before after */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ba>div{border-radius:14px;padding:14px;border:2px solid var(--line)}
+.ba .before{background:#f6f6f6}
+.ba .after{background:var(--green2);border-color:#a8d8bb}
+details.acc{background:#fff;border:1px solid var(--line);border-radius:14px;margin:10px 0;box-shadow:var(--shadow)}
+details.acc summary{padding:14px 18px;font-weight:800;color:var(--navy);cursor:pointer;font-family:Georgia,serif;font-size:1.15rem}
+details.acc>div{padding:0 18px 16px}
+
+/* scenario / quiz */
+.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 16px;margin:8px 0;transition:.15s}
+.opt:hover:not([disabled]){border-color:var(--navy2);background:#f2f8ff}
+.opt.ok{border-color:var(--green);background:var(--green2)}
+.opt.no{border-color:var(--c3);background:#fdeceb}
+.fb{margin-top:8px;padding:10px 14px;border-radius:12px;background:#eaf2fc;display:none}
+.fb.show{display:block;animation:fade .3s}
+.scn{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.scn .badge{background:#f2f8ff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:.92rem}
+.qprog{height:10px;background:#e3ecf6;border-radius:9px;overflow:hidden;margin-bottom:12px}
+.qprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--navy2));transition:width .4s}
+.cert{text-align:center;border:4px double var(--gold);border-radius:20px;padding:26px;background:linear-gradient(180deg,#fffdf4,#fff);margin-top:14px}
+.cert .medal{font-size:3.4rem}
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.cheat div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;border-top:5px solid var(--green)}
+.cheat div:nth-child(even){border-top-color:var(--navy2)}
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.gl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.95rem}
+.gl b{color:var(--navy)}
+footer{background:var(--navy);color:#cfdcec;margin-top:60px;padding:36px 0;font-size:.9rem}
+footer a{color:#9fd5ff}
+footer .wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+footer svg{width:64px;height:64px;flex:none}
+.reveal{opacity:0;transform:translateY(18px);transition:.6s}
+.reveal.in{opacity:1;transform:none}
+@media(max-width:820px){
+  body{font-size:17px}.hero .grid,.twocol,.threecol,.ba{grid-template-columns:1fr}
+  .hero h1{font-size:2.1rem}h2{font-size:1.6rem}.brand b{display:none}
+  .modhead{flex-wrap:wrap}.listen{margin-left:0}
+  .flow .arr{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media print{header.top,.listen,.btn{display:none}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- Logo (recreated as vector so the page stays tiny and self-contained) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="49" fill="#14355f"/>
+    <circle cx="50" cy="50" r="43" fill="#fff"/>
+    <circle cx="50" cy="50" r="40.5" fill="none" stroke="#2e9d54" stroke-width="2.6"/>
+    <path d="M30 68 V40 Q30 22 50 22 Q70 22 70 40 V68" fill="none" stroke="#14355f" stroke-width="11"/>
+    <rect x="22" y="62" width="16" height="6" rx="1.5" fill="#14355f"/><rect x="62" y="62" width="16" height="6" rx="1.5" fill="#14355f"/>
+    <rect x="43" y="14" width="5" height="11" fill="#14355f"/><rect x="52" y="14" width="5" height="11" fill="#14355f"/>
+    <rect x="40" y="13" width="20" height="4" rx="1.5" fill="#14355f"/>
+    <text x="50" y="82" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="15" fill="#14355f">NWSS</text>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="NWSS home"><svg><use href="#logo"/></svg><b>National Wastewater<br>Surveillance System</b></a>
+    <nav class="mods" id="nav">
+      <a href="#m1">1 What is it?</a><a href="#m2">2 Why it matters</a><a href="#m3">3 How it's made</a>
+      <a href="#m4">4 Big picture</a><a href="#m5">5 Who's included</a><a href="#m6">6 Updates</a>
+      <a href="#m7">7 Read it</a><a href="#m8">8 Quiz</a>
+    </nav>
+  </div>
+  <div id="bar"></div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap grid">
+    <div>
+      <span class="kicker">Interactive learning course</span>
+      <h1>The Wastewater Viral Activity Level <span style="color:#7fe0a3">(WVAL)</span></h1>
+      <p class="lead">Learn how scientists use the water that goes down our drains to tell how much of a germ is going around, and how to read the WVAL gauge like an expert. No science background needed.</p>
+      <p><a class="btn" href="#m1">Start learning</a><a class="btn ghost" href="#m8">Jump to quiz</a></p>
+      <div class="facts"><span>About 40 minutes</span><span>8 short modules</span><span>9 hands-on activities</span><span>Listen mode on every module</span></div>
+    </div>
+    <div class="heroGauge">
+      <h3>Meet the WVAL gauge</h3>
+      <p class="hint">Tap a color to see what it means</p>
+      <div id="heroG"></div>
+      <div id="heroGtxt" class="callout" style="margin:6px 0 0;text-align:center"><b>Moderate:</b> clearly above the usual low level.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE 1 -->
+<section class="mod reveal" id="m1"><div class="wrap">
+  <div class="modhead"><div class="num">1</div><h2>What is the WVAL?</h2><button class="listen" data-say="m1">Listen</button></div>
+
+  <div class="card tint">
+    <p class="story say">Imagine you are checking the weather. A <b>thermometer</b> gives you one number that tells you how hot it is. The <b>Wastewater Viral Activity Level</b>, or <b>WVAL</b>, is like a thermometer for germs in a community.</p>
+    <p class="story say">Every time we flush a toilet or use a sink, the water goes down the drain and travels through pipes to a <b>treatment plant</b>. Sick people sometimes leave tiny bits of germs in that water. Scientists take a small sample of the water and measure how much of a virus is in it. The WVAL turns that measurement into an easy score.</p>
+    <div class="callout say"><b>The big idea:</b> The WVAL compares the amount of a virus right now to the <i>usual low level</i> of that virus at the same place during the last 24 months (2 years).</div>
+  </div>
+
+  <div class="card">
+    <h3>Follow the water</h3>
+    <p>Tap each step to see what happens.</p>
+    <div class="flow" id="flow">
+      <div class="node sel" data-i="0"><span class="ic">🏠</span>Homes and buildings</div><div class="arr">›</div>
+      <div class="node" data-i="1"><span class="ic">🚰</span>Sewer pipes</div><div class="arr">›</div>
+      <div class="node" data-i="2"><span class="ic">🏭</span>Treatment plant (the "site")</div><div class="arr">›</div>
+      <div class="node" data-i="3"><span class="ic">🧪</span>Lab test</div><div class="arr">›</div>
+      <div class="node" data-i="4"><span class="ic">📊</span>WVAL</div>
+    </div>
+    <div class="callout blue" id="flowText"></div>
+  </div>
+
+  <div class="card">
+    <h3>Three germs have been checked and proven to work</h3>
+    <p>CDC <b>validated</b> (carefully tested and confirmed) the WVAL method for three common <abbr class="g" tabindex="0" data-tip="Illnesses that affect your nose, throat, and lungs, the parts you breathe with.">respiratory illnesses</abbr>:</p>
+    <div class="threecol">
+      <div class="mini"><div class="ic">🤧</div><b>Influenza A</b><br>One type of the flu virus.</div>
+      <div class="mini"><div class="ic">😷</div><b>COVID-19</b><br>Caused by the virus SARS-CoV-2.</div>
+      <div class="mini"><div class="ic">👶</div><b>RSV</b><br>Respiratory syncytial virus. Often causes colds, and can be serious for babies and older adults.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Why a "score" and not just a count?</h3>
+    <p>Different cities are different sizes and use different pipes. If we just compared raw amounts, a big city and a small town could never be compared fairly. The WVAL puts every place on the <b>same ruler</b>, so the number means the same thing everywhere. This is called <b>standardizing</b>.</p>
+    <div class="twocol">
+      <div class="mini"><b>Within one place</b><br>See if the virus is rising or falling over time.</div>
+      <div class="mini"><b>Between places</b><br>Compare sites, states/territories, regions, and the whole nation.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- MODULE 2 -->
+<section class="mod reveal" id="m2"><div class="wrap">
+  <div class="modhead"><div class="num">2</div><h2>Why is it important?</h2><button class="listen" data-say="m2">Listen</button></div>
+  <div class="card">
+    <div class="tabs" data-tabs="why"><button class="on" data-p="you">For you</button><button data-p="ph">For public health</button><button data-p="data">What to look at</button></div>
+    <div class="pane on say" data-pane="why-you">
+      <h3>For you and your family</h3>
+      <p class="story">If you see the WVAL go <b>up</b>, there may be a <b>higher risk of getting sick</b> in your area. That is a helpful clue! You can use it to make smart choices to protect yourself and the people around you.</p>
+      <p>Some common ways people protect themselves from respiratory viruses (these are general tips, so follow advice from your own doctor and health department): stay up to date on recommended vaccines, wash hands often, stay home when sick, and think about extra care around babies, older adults, and people with weaker immune systems when levels are higher.</p>
+    </div>
+    <div class="pane say" data-pane="why-ph">
+      <h3>For public health teams</h3>
+      <p>Health officials use wastewater (sewage) data <b>together with clinical data</b> (like doctor and hospital information) to understand how much virus is in a community. The WVAL helps them to:</p>
+      <div class="threecol" style="grid-template-columns:repeat(2,1fr)">
+        <div class="mini"><div class="ic">🗺️</div><b>See the bigger picture</b><br>Across a state/territory, a region, or the United States.</div>
+        <div class="mini"><div class="ic">⚖️</div><b>Compare fairly</b><br>Across cities, states/territories, and across time.</div>
+        <div class="mini"><div class="ic">🚨</div><b>Spot unusual increases</b><br>In influenza A, COVID-19, or RSV.</div>
+        <div class="mini"><div class="ic">📣</div><b>Share trends</b><br>With healthcare providers and the public.</div>
+      </div>
+    </div>
+    <div class="pane say" data-pane="why-data">
+      <h3>Three things to check, like a detective</h3>
+      <div class="threecol">
+        <div class="mini"><div class="ic">📍</div><b>1. Current level</b><br>What is the virus status in your community right now?</div>
+        <div class="mini"><div class="ic">📈</div><b>2. Trend</b><br>Is it going up, going down, or staying about the same?</div>
+        <div class="mini"><div class="ic">🏥</div><b>3. Other data</b><br>Do other clues, like clinical data, show the same trend? (Example: CDC's Respiratory Illnesses Data Channel.)</div>
+      </div>
+      <p>A good detective never uses just one clue. Wastewater data is strong, and it is even stronger when it agrees with other data.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Mini-game: Which clue is it?</h3>
+    <p>Pick the clue each sentence describes.</p>
+    <div id="clueGame"></div>
+  </div>
+</div></section>
+
+<!-- MODULE 3 -->
+<section class="mod reveal" id="m3"><div class="wrap">
+  <div class="modhead"><div class="num">3</div><h2>How is the WVAL made?</h2><button class="listen" data-say="m3">Listen</button></div>
+  <p class="story">There are <b>six steps</b> after a quick "what's needed" check. Walk through them one at a time. Each step has something to try.</p>
+  <div class="card">
+    <div class="stepnav" id="stepnav"></div>
+
+    <!-- step 0 -->
+    <div class="pane on say" data-step="0">
+      <h3>Before we start: enough data</h3>
+      <p>For every site, we need <b>8 weeks of data</b> that were measured with the <b>same lab method</b>. Having too little data can make numbers jump around wildly. Eight weeks keeps things steady.</p>
+      <div class="demo"><h4>Try it: Is this site ready?</h4>
+        <label class="lab"><span>Weeks of data collected</span><span id="wkOut">3 weeks</span></label>
+        <input type="range" id="wk" min="0" max="12" value="3">
+        <div class="bars" style="height:90px;margin-top:10px" id="wkBars"></div>
+        <p id="wkMsg" class="callout" style="margin-bottom:0"></p>
+      </div>
+    </div>
+
+    <!-- step 1 -->
+    <div class="pane say" data-step="1">
+      <h3>Step 1: Group data together</h3>
+      <p>To compare <b>apples with apples</b>, we put samples into groups. Each group has the same: <b>(1) virus</b>, <b>(2) site</b>, and <b>(3) lab and lab method</b>.</p>
+      <div class="demo"><h4>Try it: Who belongs in the same group?</h4>
+        <p>Our group is <span class="tag">COVID-19 · Riverton · Lab 1</span>. Tap every sample that belongs, then press Check.</p>
+        <div class="chips" id="grpChips"></div>
+        <p style="margin-top:12px"><button class="btn sm navy" id="grpCheck">Check</button> <span id="grpMsg"></span></p>
+      </div>
+    </div>
+
+    <!-- step 2 -->
+    <div class="pane say" data-step="2">
+      <h3>Step 2: Validate (clean and calm) the data</h3>
+      <p>Two tricks make the data ready for fair comparison.</p>
+      <p><b>Trick A: Log transform.</b> Virus amounts can differ hugely, like 10 versus 1,000,000. A log transform shrinks giant gaps so we can see the overall pattern clearly.</p>
+      <div class="demo"><h4>Try it: Squish the giants</h4>
+        <div class="tabs" id="logTabs"><button class="on" data-m="raw">Raw amounts</button><button data-m="log">After log transform</button></div>
+        <div id="logBars"></div>
+        <p class="callout" id="logMsg" style="margin-bottom:0"></p>
+      </div>
+      <p style="margin-top:18px"><b>Trick B: Limit unusually high values.</b> Extremely high amounts are <b>capped at the 99th percentile</b> of similarly grouped data. This is called <abbr class="g" tabindex="0" data-tip="Winsorization: instead of throwing out an extreme number, you pull it down to a set limit. Here the limit is the 99th percentile, the value that is higher than 99 out of 100 values.">Winsorization</abbr>. The big number stays in the data, but it can no longer push the answer around.</p>
+      <div class="demo"><h4>Try it: Throw away or cap?</h4>
+        <div class="tabs" id="capTabs"><button class="on" data-m="raw">Raw</button><button data-m="old">Old way (before Aug 2026): remove</button><button data-m="new">New way: cap at 99th percentile</button></div>
+        <div class="bars" id="capBars"><div class="capline" id="capLine" style="bottom:100%"></div></div>
+        <p class="callout" id="capMsg" style="margin-bottom:0"></p>
+      </div>
+    </div>
+
+    <!-- step 3 -->
+    <div class="pane say" data-step="3">
+      <h3>Step 3: Find the "typical low level" for each site</h3>
+      <p>Look at the virus amounts from the <b>past 2 years</b> at that site. Pick the value that is <b>higher than 10% of all the values</b>. This is the site's <b>baseline</b>, its <i>typical low level</i>. Today's amount will be compared to it.</p>
+      <div class="demo"><h4>Try it: Find the baseline</h4>
+        <p>Here are 20 measurements from one site, in a jumble.</p>
+        <div class="dots" id="dots"></div>
+        <p><button class="btn sm navy" id="dSort">1. Line them up</button> <button class="btn sm navy" id="dMark">2. Mark the lowest 10%</button> <button class="btn sm" id="dReset">Reset</button></p>
+        <p class="callout" id="dMsg" style="margin-bottom:0">Press the first button.</p>
+      </div>
+      <div class="callout blue"><b>New sites:</b> They do not have 2 years of history yet. While a site becomes established, an adapted <b>lab-based</b> baseline and standard deviation (made from all the data at the site's lab) are used: <b>365 days</b> for influenza A and RSV, and <b>182 days</b> for SARS-CoV-2 (COVID-19). This gives steadier numbers.</div>
+      <div class="demo"><h4>Reminder: When baselines are refreshed</h4>
+        <p style="margin-top:0">Tap a pin. Baselines are recalculated when the virus is usually <b>low</b>, so today's levels are always compared to <i>low</i> levels. All historical WVAL values are updated with the new baseline.</p>
+        <div class="year" id="year"></div>
+        <p class="callout" id="yearMsg" style="margin-bottom:0">Tap a pin above.</p>
+      </div>
+    </div>
+
+    <!-- step 4 -->
+    <div class="pane say" data-step="4">
+      <h3>Step 4: Compare today to the baseline</h3>
+      <p>Find how far today's amount is above the baseline, then divide by the <b>standard deviation</b> (a measure of how much the site's numbers usually wiggle). The result is a standardized score: <b>how many "wiggle-sizes" above the typical low level we are</b>.</p>
+      <div class="formula">WVAL = <span class="fr"><i>current − baseline</i><i>standard deviation</i></span></div>
+      <div class="demo"><h4>Try it with pretend numbers</h4>
+        <label class="lab"><span>Baseline (typical low level)</span><span id="bsOut"></span></label><input type="range" id="bs" min="1" max="4" step="0.1" value="2">
+        <label class="lab"><span>Standard deviation (the "wiggle")</span><span id="sdOut"></span></label><input type="range" id="sd" min="0.2" max="1.2" step="0.05" value="0.5">
+        <label class="lab"><span>Current amount (log scale)</span><span id="cuOut"></span></label><input type="range" id="cu" min="1" max="10" step="0.1" value="5">
+        <div class="result" id="calcRes"></div>
+        <p style="text-align:center;margin:0">Higher WVAL = farther above the typical low level.</p>
+      </div>
+      <p>Because every site is measured in "wiggle-sizes" from its own baseline, scores can be compared across sites.</p>
+    </div>
+
+    <!-- step 5 -->
+    <div class="pane say" data-step="5">
+      <h3>Step 5: Average each week</h3>
+      <p>For each week, we <b>average</b> the WVAL values for each site. Averages smooth out single odd days and show the weekly trend.</p>
+      <div class="demo"><h4>Try it: Make a weekly average</h4>
+        <label class="lab"><span>Monday sample WVAL</span><span id="a1o"></span></label><input type="range" class="av" id="a1" min="0" max="15" step="0.5" value="4">
+        <label class="lab"><span>Wednesday sample WVAL</span><span id="a2o"></span></label><input type="range" class="av" id="a2" min="0" max="15" step="0.5" value="7">
+        <label class="lab"><span>Friday sample WVAL</span><span id="a3o"></span></label><input type="range" class="av" id="a3" min="0" max="15" step="0.5" value="5">
+        <div class="result" id="avRes"></div>
+      </div>
+    </div>
+
+    <!-- step 6 -->
+    <div class="pane say" data-step="6">
+      <h3>Step 6: Sort into five categories</h3>
+      <p>Finally, each WVAL goes into one of five groups: <b>very low, low, moderate, high, very high</b>. This gives a quick, easy picture.</p>
+      <div class="callout warn"><b>Important:</b> Each virus has its <b>own</b> cut-offs, because each virus behaves differently. A WVAL of <b>10.0</b> is <b>moderate</b> for influenza A, <b>high</b> for COVID-19, and <b>very high</b> for RSV.</div>
+      <div class="demo"><h4>Try it: Slide the WVAL</h4>
+        <div class="tabs" id="vtabs"><button class="on" data-v="flu">Influenza A</button><button data-v="cov">COVID-19</button><button data-v="rsv">RSV</button></div>
+        <div id="catG"></div>
+        <label class="lab"><span>WVAL value</span><span id="catOut"></span></label><input type="range" id="cat" min="0" max="20" step="0.1" value="10">
+        <p style="text-align:center;margin:6px 0 0" id="catRes"></p>
+        <p style="text-align:center;margin:0"><button class="btn sm navy" id="ten">Set it to 10.0</button></p>
+      </div>
+      <h3 style="margin-top:20px">The cut-off table</h3>
+      <div style="overflow-x:auto"><table class="th" id="thTable"></table></div>
+      <p style="font-size:.9rem;color:var(--muted)">Thresholds shown are those from the CDC page (August 2026 update). CDC re-checks them every year.</p>
+    </div>
+
+    <div class="stepfoot"><button class="btn sm navy" id="prevStep">‹ Back</button><button class="btn sm" id="nextStep">Next step ›</button></div>
+  </div>
+
+  <details class="sci"><summary>Grown-up science box: why these choices?</summary>
+    <p><b>Log transform:</b> viral concentrations in wastewater span several orders of magnitude and are roughly log-normally distributed; the log scale stabilizes variance. <b>Winsorization</b> keeps all observations while bounding leverage from extreme values. <b>Baseline at the 10th percentile</b> over 24 months approximates a "low-activity" reference. <b>Standardizing</b> by the standard deviation expresses the departure in site-specific units so sites with different assays and dilution can be compared. Each virus has distinct thresholds because the distribution of WVAL values differs among viruses.</p></details>
+</div></section>
+
+<!-- MODULE 4 -->
+<section class="mod reveal" id="m4"><div class="wrap">
+  <div class="modhead"><div class="num">4</div><h2>From one site to the whole nation</h2><button class="listen" data-say="m4">Listen</button></div>
+  <div class="card tint">
+    <p class="story say">One treatment plant gives one WVAL. To see the bigger picture, we <b>combine</b> many sites using the <b>median</b>. The median is the <b>middle number</b> when you line numbers up from smallest to biggest.</p>
+    <div class="twocol say">
+      <div class="mini"><span class="tag g">State / territory</span><br>Median of the <b>site</b> WVALs</div>
+      <div class="mini"><span class="tag g">Region</span><br>Median of the <b>state/territory</b> WVALs</div>
+      <div class="mini"><span class="tag g">National</span><br>Median of the <b>state/territory</b> WVALs</div>
+      <div class="callout warn" style="margin:0"><b>Careful:</b> Some states have lots of sampling sites in certain areas. So a state's median may <b>not</b> describe every community in that state.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Try it: Build a national number</h3>
+    <p>Move the sliders for each site (these are pretend WVALs). Watch the medians change at every level.</p>
+    <div class="tree" id="tree"></div>
+    <p><button class="btn sm navy" id="rand">Shuffle values</button></p>
+    <p class="callout blue" id="treeMsg"></p>
+  </div>
+</div></section>
+
+<!-- MODULE 5 -->
+<section class="mod reveal" id="m5"><div class="wrap">
+  <div class="modhead"><div class="num">5</div><h2>Which sites are included?</h2><button class="listen" data-say="m5">Listen</button></div>
+  <div class="card">
+    <p class="story say">New sites, and sites that make a big change to their lab method, must wait until they have <b>at least 8 weeks</b> of reported samples before they join the medians. Influenza A and RSV have one extra rule: sites must <b>start sampling by October 1</b> each year for their data to be displayed that season.</p>
+    <div class="twocol">
+      <div class="mini"><span class="tag">COVID-19</span><br>Included in national, regional, state or territorial medians after 8 weeks.</div>
+      <div class="mini"><span class="tag g">Influenza A and RSV</span><br>Included in national and state or territorial medians after 8 weeks, and must begin sampling by Oct 1.</div>
+    </div>
+    <div class="demo"><h4>Try it: When will a new site show up?</h4>
+      <div class="tabs" id="incTabs"><button class="on" data-v="cov">COVID-19</button><button data-v="flu">Influenza A</button><button data-v="rsv">RSV</button></div>
+      <label class="lab"><span>Site starts sampling on</span><input type="date" id="incDate"></label>
+      <p class="callout" id="incMsg"></p>
+    </div>
+    <p>Also, CDC publishes a weekly dataset of current and past WVALs for influenza A, COVID-19, and RSV on <a href="https://data.cdc.gov" target="_blank" rel="noopener">data.cdc.gov</a>.</p>
+  </div>
+</div></section>
+
+<!-- MODULE 6 -->
+<section class="mod reveal" id="m6"><div class="wrap">
+  <div class="modhead"><div class="num">6</div><h2>Keeping it fresh: yearly updates</h2><button class="listen" data-say="m6">Listen</button></div>
+  <div class="card tint say">
+    <p class="story">Wastewater monitoring is a <b>growing science</b>. Each year, CDC works with wastewater scientists at state and local health departments and with infectious disease experts to check and improve the methods. This is like regular tune-ups for a car.</p>
+    <ul>
+      <li>The review happens each <b>summer</b>, before the fall/winter respiratory season. New methods are published and applied each <b>August</b>.</li>
+      <li>Baselines use the latest <b>two years</b> of data, so WVAL ranges can shift as new data replace old.</li>
+      <li>CDC checks the methods against clinical data from the <b>National Syndromic Surveillance Program (NSSP)</b>.</li>
+      <li>When methods change, they are applied to <b>all historical data</b>, not only new data. That way, differences you see over time come from the virus, <b>not</b> from changes in math.</li>
+    </ul>
+  </div>
+  <h3>What changed in August 2026?</h3>
+  <p>Open each box to see "before" and "now".</p>
+  <details class="acc" open><summary>1. Outliers (extreme values)</summary><div class="ba">
+    <div class="before"><b>Before</b><br>Values with a z-score greater than four were <b>removed</b>.</div>
+    <div class="after"><b>Now</b><br>Extreme values are <b>Winsorized at the 99th percentile</b>: included, but their impact is limited.</div></div></details>
+  <details class="acc"><summary>2. Baselines and standard deviations</summary><div class="ba">
+    <div class="before"><b>Before</b><br>New sites had too little data, so scores could jump to extremes.</div>
+    <div class="after"><b>Now</b><br>New sites borrow a baseline and standard deviation from <b>all data at their lab</b> for the first <b>182 days</b> (COVID-19) or <b>365 days</b> (influenza A, RSV). After that, they use their <b>own</b> data. This is steadier and avoids extreme scores caused by limited data.</div></div></details>
+  <details class="acc"><summary>3. Aggregation (combining)</summary><div class="ba">
+    <div class="before"><b>Before</b><br>The national WVAL was the median of the <b>regional</b> WVALs.</div>
+    <div class="after"><b>Now</b><br>The national WVAL is the median of the <b>jurisdictional</b> (state/territory) WVALs. This is more consistent across programs that define regions differently, and it makes the link between state and national numbers clearer.</div></div></details>
+  <details class="acc"><summary>4. WVAL thresholds (the category cut-offs)</summary><div class="ba">
+    <div class="before"><b>Before</b><br>Influenza A and RSV used <b>Jenks Natural Breaks</b>; COVID-19 used <b>percentiles</b>.</div>
+    <div class="after"><b>Now</b><br>All three use Jenks Natural Breaks on the latest <b>24 months</b>. Performance was checked against NSSP categories. Small updates keep the thresholds in line with recent activity.</div></div>
+    <div style="padding:0 18px 14px"><span class="tag">Fun fact</span> Jenks Natural Breaks is a method that looks for the <i>natural gaps</i> in a set of numbers and puts the cut-offs there, like sorting a pile of crayons into groups that look alike.</div></details>
+</div></section>
+
+<!-- MODULE 7 -->
+<section class="mod reveal" id="m7"><div class="wrap">
+  <div class="modhead"><div class="num">7</div><h2>Reading the WVAL like a pro</h2><button class="listen" data-say="m7">Listen</button></div>
+  <div class="card tint say">
+    <p class="story">Remember the three clues: <b>current level</b>, <b>trend</b>, and <b>other data</b>. Put them together before you decide what to do. Try these real-life situations (all pretend places).</p>
+  </div>
+  <div id="scen"></div>
+  <div class="card">
+    <h3>Things the WVAL can and cannot tell you</h3>
+    <div class="twocol">
+      <div class="mini"><b>It can</b><ul style="padding-left:18px;margin:6px 0"><li>Show how far virus levels are above a typical low level</li><li>Compare places and times fairly</li><li>Show rising or falling trends</li><li>Give an early view of community-wide changes</li></ul></div>
+      <div class="mini"><b>Keep in mind</b><ul style="padding-left:18px;margin:6px 0"><li>It is a community measure, not a test of one person</li><li>A state median may hide hot spots in some places</li><li>Categories differ for each virus</li><li>Past values can change slightly after yearly updates</li></ul></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- MODULE 8 -->
+<section class="mod reveal" id="m8"><div class="wrap">
+  <div class="modhead"><div class="num">8</div><h2>Show what you know</h2><button class="listen" data-say="m8">Listen</button></div>
+  <div class="card">
+    <div class="qprog"><i id="qp"></i></div>
+    <div id="quiz"></div>
+  </div>
+  <h3>Cheat sheet</h3>
+  <div class="cheat">
+    <div><b>What</b><br>A standardized score comparing current virus levels to the typical low level at that site over the last 24 months.</div>
+    <div><b>Viruses</b><br>Influenza A, COVID-19, RSV.</div>
+    <div><b>Needs</b><br>8 weeks of data, same lab method.</div>
+    <div><b>Recipe</b><br>Group → log and cap at 99th percentile → baseline (10th percentile) → (current − baseline) ÷ SD → weekly average → five categories.</div>
+    <div><b>Combine</b><br>State: median of sites. Region and national: median of state/territory values.</div>
+    <div><b>Refresh</b><br>COVID-19 baselines: Apr 1 and Oct 1. Influenza A and RSV: Aug 1. Methods updated each August.</div>
+  </div>
+  <h3 style="margin-top:28px">Word helper</h3>
+  <div class="gl">
+    <div><b>Wastewater</b>: used water from homes and buildings that goes to a treatment plant.</div>
+    <div><b>Site</b>: a place where wastewater samples are collected.</div>
+    <div><b>Viral concentration</b>: how much virus is in a sample.</div>
+    <div><b>Baseline</b>: the typical low level for a site.</div>
+    <div><b>Standard deviation</b>: how much numbers usually wiggle around.</div>
+    <div><b>Median</b>: the middle value in a sorted list.</div>
+    <div><b>Percentile</b>: the 99th percentile is higher than 99 out of 100 values.</div>
+    <div><b>Log transform</b>: a math step that shrinks very big gaps.</div>
+    <div><b>Winsorization</b>: capping extreme values instead of removing them.</div>
+    <div><b>Clinical data</b>: information from health care, like doctor visits.</div>
+    <div><b>Jurisdiction</b>: a state, territory, or similar reporting area.</div>
+    <div><b>Recalibration</b>: a yearly tune-up of the methods and cut-offs.</div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <svg><use href="#logo"/></svg>
+  <div>
+    <b>National Wastewater Surveillance System (NWSS)</b><br>
+    This is an unofficial, simplified learning course based on the CDC web page <a href="https://www.cdc.gov/wastewater/about/wval.html" target="_blank" rel="noopener">Using the Wastewater Viral Activity Level</a> (dated Aug. 25, 2026). Example numbers in the activities are pretend. For official data and guidance, always visit CDC.gov.
+  </div>
+</div></footer>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS="http://www.w3.org/2000/svg";
+const CATS=[
+ {n:"Very low",c:"#cdeee3",d:"The virus in the wastewater is close to its usual low level."},
+ {n:"Low",c:"#b3e19c",d:"A little above the usual low level."},
+ {n:"Moderate",c:"#fba33a",d:"Clearly above the usual low level."},
+ {n:"High",c:"#f25c54",d:"Well above the usual low level."},
+ {n:"Very high",c:"#9b2a6a",d:"Far above the usual low level."}];
+const TH={flu:[2.4,5.5,10.2,15.6],cov:[2.6,4.9,7.9,11.6],rsv:[1.7,3.4,5.4,8.1]};
+const VN={flu:"Influenza A",cov:"COVID-19",rsv:"RSV"};
+const catOf=(v,a)=>v<=a[0]?0:v<=a[1]?1:v<=a[2]?2:v<=a[3]?3:4;
+const MAXV=20;
+
+/* ---------- gauge ---------- */
+function pt(cx,cy,r,t){const a=t*Math.PI/180;return[cx-r*Math.cos(a),cy-r*Math.sin(a)]}
+function makeGauge(host,onPick){
+  const s=document.createElementNS(NS,"svg");s.setAttribute("viewBox","0 0 300 185");s.style.width="100%";s.style.maxWidth="440px";s.style.display="block";s.style.margin="0 auto";
+  s.setAttribute("role","img");s.setAttribute("aria-label","Gauge with five WVAL categories from very low to very high");
+  const segs=[];
+  CATS.forEach((c,i)=>{
+    const t0=i*36+1,t1=(i+1)*36-1,o0=pt(150,150,130,t0),o1=pt(150,150,130,t1),i1=pt(150,150,72,t1),i0=pt(150,150,72,t0);
+    const p=document.createElementNS(NS,"path");
+    p.setAttribute("d",`M${o0} A130 130 0 0 1 ${o1} L${i1} A72 72 0 0 0 ${i0}Z`.replace(/,/g," "));
+    p.setAttribute("fill",c.c);p.style.cursor=onPick?"pointer":"default";p.style.transition=".3s";p.style.transformOrigin="150px 150px";
+    if(onPick){p.addEventListener("click",()=>onPick(i));p.setAttribute("tabindex","0");p.setAttribute("aria-label",c.n);p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")onPick(i)})}
+    s.appendChild(p);segs.push(p);
+    const m=pt(150,150,101,i*36+18),tx=document.createElementNS(NS,"text");
+    tx.setAttribute("x",m[0]);tx.setAttribute("y",m[1]);tx.setAttribute("text-anchor","middle");tx.setAttribute("dominant-baseline","middle");
+    tx.setAttribute("font-size","10.5");tx.setAttribute("font-weight","800");tx.setAttribute("fill",i>=3?"#fff":"#14355f");
+    tx.setAttribute("transform",`rotate(${i*36+18-90} ${m[0]} ${m[1]})`);tx.style.pointerEvents="none";tx.textContent=c.n.toUpperCase();s.appendChild(tx);
+  });
+  const g=document.createElementNS(NS,"g");g.style.transformOrigin="150px 150px";g.style.transition="transform .6s cubic-bezier(.3,1.4,.5,1)";
+  const nd=document.createElementNS(NS,"path");nd.setAttribute("d","M146 150 L150 62 L154 150Z");nd.setAttribute("fill","#14355f");
+  const hub=document.createElementNS(NS,"circle");hub.setAttribute("cx",150);hub.setAttribute("cy",150);hub.setAttribute("r",10);hub.setAttribute("fill","#14355f");
+  const hub2=document.createElementNS(NS,"circle");hub2.setAttribute("cx",150);hub2.setAttribute("cy",150);hub2.setAttribute("r",4);hub2.setAttribute("fill","#2e9d54");
+  g.append(nd,hub,hub2);s.appendChild(g);host.appendChild(s);
+  return{set(theta,active){g.style.transform=`rotate(${theta-90}deg)`;segs.forEach((p,i)=>{p.style.transform=i===active?"scale(1.06)":"scale(1)";p.style.opacity=active==null||i===active?1:.55})}};
+}
+const hg=makeGauge($("#heroG"),i=>{hg.set(i*36+18,i);$("#heroGtxt").innerHTML=`<b>${CATS[i].n}:</b> ${CATS[i].d}`});
+hg.set(2*36+18,2);
+
+/* ---------- flow ---------- */
+const FLOW=["People use toilets and sinks. Sick people can pass small bits of virus in their body waste, even if they never visit a doctor. That is part of what makes wastewater so useful.",
+"Used water travels together through underground sewer pipes. The water from many homes and buildings mixes, so one sample reflects a whole community.",
+"Wastewater arrives at a treatment plant. The place where samples are collected is called a <b>site</b>. Many sites across the country take part in the National Wastewater Surveillance System.",
+"Lab workers measure how much of each virus is in the sample. This is called the <b>viral concentration</b>. The lab and lab method are recorded because they affect the numbers.",
+"CDC turns the measurements into the <b>WVAL</b>, a standardized score and one of five categories. Health officials and the public can then see it."];
+function flowSet(i){$$("#flow .node").forEach(n=>n.classList.toggle("sel",+n.dataset.i===i));$("#flowText").innerHTML=FLOW[i]}
+$$("#flow .node").forEach(n=>n.addEventListener("click",()=>flowSet(+n.dataset.i)));flowSet(0);
+
+/* ---------- tabs generic ---------- */
+$$("[data-tabs]").forEach(t=>{const k=t.dataset.tabs;$$("button",t).forEach(b=>b.addEventListener("click",()=>{
+  $$("button",t).forEach(x=>x.classList.toggle("on",x===b));
+  $$(`[data-pane^="${k}-"]`).forEach(p=>p.classList.toggle("on",p.dataset.pane===k+"-"+b.dataset.p));}))});
+
+/* ---------- clue game ---------- */
+(function(){
+ const Q=[["\"Is the virus going up, down, or staying the same?\"",1],["\"What is the virus status in my community right now?\"",0],["\"Do doctor and hospital numbers show the same thing?\"",2]];
+ const names=["Current level","Trend","Other data"];let h="";
+ Q.forEach((q,i)=>{h+=`<div style="margin:10px 0"><div style="font-weight:700;margin-bottom:6px">${q[0]}</div><div class="chips">`+names.map((n,j)=>`<button class="chip" data-q="${i}" data-j="${j}">${n}</button>`).join("")+`</div></div>`});
+ $("#clueGame").innerHTML=h;
+ $$("#clueGame .chip").forEach(b=>b.addEventListener("click",()=>{const q=+b.dataset.q,j=+b.dataset.j;b.classList.add(Q[q][1]===j?"ok":"no")}));
+})();
+
+/* ---------- steps ---------- */
+const STEPN=["Enough data","Group","Clean","Baseline","Compare","Average","Categories"];
+let step=0;const seen=new Set([0]);
+$("#stepnav").innerHTML=STEPN.map((n,i)=>`<button data-i="${i}"><b>${i||"✓"}</b>${n}</button>`).join("");
+function goStep(i){step=Math.max(0,Math.min(6,i));seen.add(step);
+ $$("#stepnav button").forEach((b,j)=>{b.classList.toggle("on",j===step);b.classList.toggle("seen",seen.has(j))});
+ $$("[data-step]").forEach(p=>p.classList.toggle("on",+p.dataset.step===step));
+ $("#prevStep").style.visibility=step?"visible":"hidden";$("#nextStep").style.visibility=step<6?"visible":"hidden";
+ if(step===6)updCat();}
+$$("#stepnav button").forEach(b=>b.addEventListener("click",()=>goStep(+b.dataset.i)));
+$("#prevStep").onclick=()=>goStep(step-1);$("#nextStep").onclick=()=>goStep(step+1);
+
+/* step 0 */
+function updWk(){const w=+$("#wk").value;$("#wkOut").textContent=w+(w===1?" week":" weeks");
+ $("#wkBars").innerHTML=Array.from({length:12},(_,i)=>`<div class="b" style="height:${i<w?60+((i*37)%35):6}%;opacity:${i<w?1:.2};${i>=8&&i<w?"background:var(--green)":""}"></div>`).join("");
+ const m=$("#wkMsg");
+ if(w>=8){m.innerHTML=`<b>Ready!</b> ${w} weeks is enough (8 or more). This site can get a WVAL.`;m.className="callout"}
+ else{m.innerHTML=`<b>Not yet.</b> Needs ${8-w} more week${8-w===1?"":"s"} of data with the same lab method to avoid wild jumps.`;m.className="callout warn"}}
+$("#wk").oninput=updWk;updWk();
+
+/* step 1 */
+(function(){
+ const C=[["COVID-19","Riverton","Lab 1",1,"Same virus, site, and lab."],["Influenza A","Riverton","Lab 1",0,"Different virus."],["COVID-19","Lakeside","Lab 1",0,"Different site."],
+  ["COVID-19","Riverton","Lab 2",0,"Different lab and method."],["COVID-19","Riverton","Lab 1",1,"Same virus, site, and lab."],["COVID-19","Riverton","Lab 1",1,"Same virus, site, and lab."]];
+ $("#grpChips").innerHTML=C.map((c,i)=>`<button class="chip" data-i="${i}">${c[0]}<small>${c[1]} · ${c[2]}</small></button>`).join("");
+ $$("#grpChips .chip").forEach(b=>b.onclick=()=>{if(!b.classList.contains("ok")&&!b.classList.contains("no"))b.classList.toggle("pick")});
+ $("#grpCheck").onclick=()=>{let right=0;
+  $$("#grpChips .chip").forEach((b,i)=>{const pick=b.classList.contains("pick")||b.classList.contains("ok")||b.classList.contains("no");const ok=pick===!!C[i][3];if(ok)right++;
+   b.classList.remove("pick","ok","no");b.classList.add(ok?"ok":"no");b.querySelector("small").textContent=C[i][1]+" · "+C[i][2]+" — "+(ok?"correct. ":"not quite. ")+C[i][4]});
+  $("#grpMsg").innerHTML=right===6?"<b>Perfect!</b> All six correct.":`<b>${right} of 6 correct.</b> Read the notes on each card.`};
+})();
+
+/* step 2 log */
+(function(){
+ const V=[10,60,500,4000,30000,1000000];let mode="raw";
+ function draw(){const mx=Math.log10(1e6);
+  $("#logBars").innerHTML=`<div class="bars" style="height:150px">`+V.map(v=>{const h=mode==="raw"?Math.max(v/1e6*100,1.5):Math.log10(v)/mx*100;return `<div class="b" style="height:${h}%"><span>${v.toLocaleString()}</span></div>`}).join("")+`</div>`;
+  $("#logMsg").innerHTML=mode==="raw"?"On the raw scale, the giant value hides all the others. Five bars look like tiny stubs.":"After the log transform, every bar is easy to see and compare, and the overall pattern shows clearly.";}
+ $$("#logTabs button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;$$("#logTabs button").forEach(x=>x.classList.toggle("on",x===b));draw()});draw();
+})();
+/* step 2 cap */
+(function(){
+ const V=[32,38,30,44,41,36,52,47,40,34,42,320];const CAP=60;const MX=340;let mode="raw";
+ function draw(){const bars=$("#capBars");$$(".b",bars).forEach(b=>b.remove());
+  V.forEach((v,i)=>{const o=v>CAP;let val=v,cls="b";
+   if(o&&mode==="raw")cls+=" out";if(o&&mode==="old")cls+=" gone";if(o&&mode==="new"){val=CAP;cls+=" cap"}
+   const d=document.createElement("div");d.className=cls;d.style.height=val/MX*100+"%";d.innerHTML=`<span>${mode==="new"&&o?CAP+" (cap)":v}</span>`;bars.appendChild(d)});
+  $("#capLine").style.bottom=mode==="new"?CAP/MX*100+"%":"100%";$("#capLine").textContent=mode==="new"?"99th percentile cap":"";
+  $("#capMsg").innerHTML={raw:"One extreme week (red) towers over everything. It could trick us into thinking something unusual happened.",old:"Old way: the extreme value was thrown away. We lose that observation completely.",new:"New way: the extreme value is pulled down to the cap. It is <b>still counted</b>, but cannot dominate the result."}[mode];}
+ $$("#capTabs button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;$$("#capTabs button").forEach(x=>x.classList.toggle("on",x===b));draw()});draw();
+})();
+
+/* step 3 dots */
+(function(){
+ const V=[1.0,1.2,1.5,1.6,1.9,2.1,2.4,2.6,2.9,3.1,3.4,3.8,4.1,4.4,4.9,5.2,5.6,5.9,6.3,6.8];
+ const order=[13,4,17,0,9,6,19,2,11,15,8,3,16,7,12,1,18,5,10,14];let sorted=false,marked=false;
+ function draw(){const arr=sorted?V.map((v,i)=>i):order;
+  $("#dots").innerHTML=arr.map(i=>{const v=V[i];let cls="dot";if(marked&&i<2)cls+=" low";if(marked&&i===2)cls+=" base";return `<div class="${cls}">${v.toFixed(1)}</div>`}).join("");}
+ $("#dSort").onclick=()=>{sorted=true;draw();$("#dMsg").innerHTML="Now they are in order from smallest to biggest. Next, find the lowest 10%.<br>10% of 20 numbers is <b>2 numbers</b>."};
+ $("#dMark").onclick=()=>{if(!sorted){$("#dMsg").textContent="Line them up first!";return}marked=true;draw();$("#dMsg").innerHTML="The two lightest-green dots are the lowest 10%. The <b>dark green dot (2.4)</b> is the first value above them, so it is higher than 10% of the values. That is the <b>baseline</b>, the typical low level."};
+ $("#dReset").onclick=()=>{sorted=marked=false;draw();$("#dMsg").textContent="Press the first button."};draw();
+})();
+/* timeline */
+(function(){
+ const P=[{l:"Apr 1",m:3,t:"COVID-19",c:"cv",d:"<b>April 1:</b> COVID-19 baselines are recalculated."},{l:"Aug 1",m:7,t:"Flu A + RSV",c:"fl",d:"<b>August 1:</b> Influenza A and RSV baselines are recalculated. Updated methods are also published and applied each August."},{l:"Oct 1",m:9,t:"COVID-19",c:"cv",d:"<b>October 1:</b> COVID-19 baselines are recalculated again. (Also the deadline for new flu A / RSV sites to begin sampling for the season.)"}];
+ const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+ $("#year").innerHTML=`<div class="line"></div>`+M.map((m,i)=>`<span class="mo" style="left:${(i+.5)/12*100}%">${m}</span>`).join("")+P.map((p,i)=>`<button class="pin ${p.c}" data-i="${i}" style="left:${p.m/12*100}%">${p.l}</button>`).join("");
+ $$("#year .pin").forEach(b=>b.onclick=()=>{$$("#year .pin").forEach(x=>x.classList.toggle("on",x===b));$("#yearMsg").innerHTML=P[+b.dataset.i].d+" <br>Purple pins: COVID-19. Green pin: influenza A and RSV."});
+})();
+
+/* step 4 calc */
+function cls(i){return"c"+i}
+function updCalc(){const b=+$("#bs").value,s=+$("#sd").value,c=+$("#cu").value;
+ $("#bsOut").textContent=b.toFixed(1);$("#sdOut").textContent=s.toFixed(2);$("#cuOut").textContent=c.toFixed(1);
+ const w=(c-b)/s;$("#calcRes").innerHTML=`(${c.toFixed(1)} − ${b.toFixed(1)}) ÷ ${s.toFixed(2)} = <span style="color:var(--green)">${w.toFixed(1)}</span>`;}
+["bs","sd","cu"].forEach(id=>$("#"+id).oninput=updCalc);updCalc();
+/* step 5 */
+function updAv(){const v=[1,2,3].map(i=>+$("#a"+i).value);v.forEach((x,i)=>$("#a"+(i+1)+"o").textContent=x.toFixed(1));
+ $("#avRes").innerHTML=`(${v.map(x=>x.toFixed(1)).join(" + ")}) ÷ 3 = <span style="color:var(--green)">${(v.reduce((a,b)=>a+b)/3).toFixed(1)}</span>`}
+$$(".av").forEach(e=>e.oninput=updAv);updAv();
+/* step 6 */
+let virus="flu";const cg=makeGauge($("#catG"),null);
+function updCat(){const v=+$("#cat").value,a=TH[virus],i=catOf(v,a);
+ const lo=i===0?0:a[i-1],hi=i===4?MAXV:a[i];let f=Math.max(0,Math.min(1,(v-lo)/(hi-lo)));
+ cg.set((i+f)*36*0.98+0.9,i);$("#catOut").textContent=v.toFixed(1);
+ $("#catRes").innerHTML=`${VN[virus]} at <b>${v.toFixed(1)}</b> is <span class="pill ${cls(i)}">${CATS[i].n}</span>`;
+ $$("#thTable td").forEach(t=>t.classList.remove("hl"));const r=$(`#thTable tr[data-v="${virus}"]`);if(r)r.children[i+1].classList.add("hl");}
+$$("#vtabs button").forEach(b=>b.onclick=()=>{virus=b.dataset.v;$$("#vtabs button").forEach(x=>x.classList.toggle("on",x===b));updCat()});
+$("#cat").oninput=updCat;$("#ten").onclick=()=>{$("#cat").value=10;updCat()};
+(function(){const f=a=>[`Up to ${a[0]}`,`&gt; ${a[0]} to ${a[1]}`,`&gt; ${a[1]} to ${a[2]}`,`&gt; ${a[2]} to ${a[3]}`,`&gt; ${a[3]}`];
+ let h="<tr><th>Virus</th>"+CATS.map(c=>`<th>${c.n}</th>`).join("")+"</tr>";
+ ["flu","cov","rsv"].forEach(k=>h+=`<tr data-v="${k}"><td>${VN[k]}</td>`+f(TH[k]).map(x=>`<td>${x}</td>`).join("")+"</tr>");$("#thTable").innerHTML=h})();
+goStep(0);
+
+/* ---------- aggregation ---------- */
+(function(){
+ const R=[{n:"Region A",st:[{n:"State 1",s:[3.2,4.1,2.8]},{n:"State 2",s:[6.5,5.9,7.2]}]},{n:"Region B",st:[{n:"State 3",s:[1.8,2.2,2.0]},{n:"State 4",s:[9.5,3.1,4.0]}]}];
+ const med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+ const col=v=>["#5fbfa3","#6bb94f","#f08a00","#e03c35","#9b2a6a"][catOf(v,TH.cov)];
+ let h="";
+ R.forEach((r,ri)=>{h+=`<div class="lvl"><h4>${r.n}: <span class="val" id="rv${ri}"></span></h4><div class="row">`;
+  r.st.forEach((s,si)=>{h+=`<div class="grp"><b>${s.n}</b> median <span class="val" id="sv${ri}${si}"></span>`;
+   s.s.forEach((v,k)=>h+=`<div class="site"><span>Site ${k+1}</span><input type="range" min="0" max="16" step="0.1" value="${v}" data-r="${ri}" data-s="${si}" data-k="${k}"><span class="val" id="v${ri}${si}${k}"></span></div>`);h+=`</div>`});h+=`</div></div>`});
+ h+=`<div class="lvl" style="border-color:var(--navy);background:#eef5fd"><h4>National (median of the state/territory values)</h4><div class="result" id="nat"></div></div>`;
+ $("#tree").innerHTML=h;
+ function upd(){const sm=[];let msg="";
+  R.forEach((r,ri)=>{const rm=[];r.st.forEach((s,si)=>{const m=med(s.s);rm.push(m);sm.push(m);const e=$("#sv"+ri+si);e.textContent=m.toFixed(1);e.style.background=col(m);
+   s.s.forEach((v,k)=>{const x=$("#v"+ri+si+k);x.textContent=v.toFixed(1);x.style.background=col(v)});
+   if(Math.max(...s.s)-m>=5&&!msg)msg=`Look at ${s.n}: its median is ${m.toFixed(1)}, but one site is ${Math.max(...s.s).toFixed(1)}. The median can hide a hot spot, which is why local site data still matters.`});
+   const x=$("#rv"+ri);const v=med(rm);x.textContent=v.toFixed(1);x.style.background=col(v)});
+  const n=med(sm);$("#nat").innerHTML=`National WVAL = <span style="color:var(--green)">${n.toFixed(1)}</span>`;
+  $("#treeMsg").innerHTML=(msg||"The median is not pulled around by one extreme site. Try making one site very high and see how little the medians move.")+"<br><small>Colors here use the COVID-19 categories, just for illustration.</small>";}
+ $$("#tree input").forEach(i=>i.oninput=()=>{R[+i.dataset.r].st[+i.dataset.s].s[+i.dataset.k]=+i.value;upd()});
+ $("#rand").onclick=()=>{$$("#tree input").forEach(i=>{const v=Math.round(Math.random()*140)/10;i.value=v;R[+i.dataset.r].st[+i.dataset.s].s[+i.dataset.k]=v});upd()};
+ upd();
+})();
+
+/* ---------- inclusion ---------- */
+(function(){
+ let v="cov";const d=$("#incDate");const now=new Date();d.value=`${now.getFullYear()}-09-15`;
+ const fmt=x=>x.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+ function upd(){if(!d.value)return;const st=new Date(d.value+"T12:00:00"),inc=new Date(st.getTime()+56*864e5);let h=`Sampling starts <b>${fmt(st)}</b>. Eight weeks of samples are reported by about <b>${fmt(inc)}</b>.<br>`;let cl="callout";
+  if(v==="cov"){h+=`Then the site is included in <b>national, regional, and state or territorial</b> medians.`}
+  else{const oct=new Date(st.getFullYear(),9,1,12);const late=st>oct;
+   if(late){h+=`<b>This site started after October 1.</b> Its ${VN[v]} WVAL will not be displayed until the <b>following year</b>.`;cl+=" warn"}
+   else h+=`It started by October 1, so after 8 weeks it is included in <b>national and state or territorial</b> medians for ${VN[v]}.`}
+  $("#incMsg").innerHTML=h;$("#incMsg").className=cl}
+ d.oninput=upd;$$("#incTabs button").forEach(b=>b.onclick=()=>{v=b.dataset.v;$$("#incTabs button").forEach(x=>x.classList.toggle("on",x===b));upd()});upd();
+})();
+
+/* ---------- scenarios ---------- */
+(function(){
+ const S=[
+ {t:"Maple County",b:["Influenza A: Low","Trend: staying the same","Clinic visits: flat"],q:"What is the best reading?",o:["Alarm! Something big is happening.","Things look steady. Keep usual healthy habits and keep watching.","The WVAL is useless because it is not high."],a:1,e:"Level, trend, and other data all agree on a calm picture. Keep watching in case that changes."},
+ {t:"Harbor City",b:["COVID-19: Moderate","Trend: increasing","Clinic visits: rising too"],q:"What does this suggest?",o:["Risk of infection may be higher and is growing. Good time to take extra care.","Nothing, because it is not very high yet.","The data disagree with each other."],a:0,e:"All three clues agree: higher than usual and rising. That is a good time to use protective steps."},
+ {t:"Pine Valley",b:["RSV: High","Trend: decreasing","Clinic visits: falling"],q:"What is the best reading?",o:["It is over, so no need to pay attention.","It is still high, but getting better. Keep watching.","It is increasing."],a:1,e:"The level is still high even though the direction is down. Level and trend tell different parts of the story."},
+ {t:"Big State",b:["State WVAL: Low","Your town's own site: High","Plenty of sites are in other regions"],q:"Why might these two differ?",o:["The state median may not show every community, especially if many sites are elsewhere.","The math must be broken.","Wastewater data cannot be local."],a:0,e:"A state median is the middle of all its sites. Local sites can differ, so check your own community's data."},
+ {t:"Rapid Rise",b:["Influenza A site WVAL: 10.0"],q:"Which category is a WVAL of 10.0 for influenza A?",o:["Very low","Moderate","Very high"],a:1,e:"For influenza A, over 5.5 up to 10.2 is moderate. (For COVID-19 it would be high, and for RSV very high.)"}];
+ $("#scen").innerHTML=S.map((s,i)=>`<div class="card"><span class="tag g">Situation ${i+1}</span> <b style="font-family:Georgia,serif;font-size:1.2rem;color:var(--navy)">${s.t}</b><div class="scn">${s.b.map(x=>`<span class="badge">${x}</span>`).join("")}</div><b>${s.q}</b>${s.o.map((o,j)=>`<button class="opt" data-i="${i}" data-j="${j}">${o}</button>`).join("")}<div class="fb" id="sf${i}"></div></div>`).join("");
+ $$("#scen .opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,j=+b.dataset.j;b.classList.add(S[i].a===j?"ok":"no");
+  if(S[i].a===j){$$(`#scen .opt[data-i="${i}"]`).forEach(x=>x.disabled=true);const f=$("#sf"+i);f.innerHTML="<b>Yes!</b> "+S[i].e;f.classList.add("show")}else{const f=$("#sf"+i);f.innerHTML="Not quite. Try another answer.";f.classList.add("show")}});
+})();
+
+/* ---------- quiz ---------- */
+(function(){
+ const Q=[
+ ["What does the WVAL compare?",["Today's weather to last year's","Current virus levels to the usual low level at that location over the last 24 months","One state's size to another's"],1,"The WVAL compares current levels with a site's typical low level over the last 24 months."],
+ ["For which viruses has CDC validated the WVAL method?",["Influenza A, COVID-19, and RSV","Only COVID-19","Measles and chickenpox"],0,"Influenza A, COVID-19, and RSV."],
+ ["How much data does a site need before it gets a WVAL?",["1 week","8 weeks using the same lab method","2 years"],1,"8 weeks with the same lab method avoids extreme fluctuations."],
+ ["Why do scientists log transform the data?",["To make numbers bigger","To hide the data","To reduce the influence of very large differences so trends are clearer"],2,"Log transforming shrinks huge gaps between concentrations."],
+ ["What happens to extremely high values since August 2026?",["They are capped at the 99th percentile but kept","They are deleted","They are doubled"],0,"Winsorization limits their impact while keeping every observation."],
+ ["How is a site's baseline chosen?",["The highest value ever","The value higher than 10% of values from the past 2 years","The average of all values"],1,"The baseline is a typical low level: higher than 10% of the values."],
+ ["What is the WVAL formula?",["(current − baseline) ÷ standard deviation","current × baseline","baseline ÷ current"],0,"The difference between current and baseline, divided by the standard deviation."],
+ ["A WVAL of 10.0 for RSV is in which category?",["Moderate","High","Very high"],2,"For RSV, anything above 8.1 is very high. Each virus has its own cut-offs."],
+ ["How is the national WVAL now calculated?",["Median of the jurisdictional (state/territory) WVALs","Median of the regional WVALs","Add all sites together"],0,"Since August 2026, it is the median of jurisdictional WVALs."],
+ ["When are influenza A and RSV baselines recalculated?",["April 1 and October 1","August 1","Every day"],1,"Influenza A and RSV: August 1. COVID-19: April 1 and October 1."],
+ ["A new influenza A site begins sampling on October 20. What happens?",["Data are shown right away","Its WVAL is not displayed until the following year","The site is deleted"],1,"Flu A and RSV sites must start by October 1 for data to display that season."],
+ ["What is the best way to use the WVAL?",["Look only at the category color","Look at the current level, the trend, and other data like clinical data","Ignore trends"],1,"Use all three clues together."]];
+ let i=0,score=0;const box=$("#quiz");
+ function show(){$("#qp").style.width=i/Q.length*100+"%";
+  if(i>=Q.length){const p=Math.round(score/Q.length*100);box.innerHTML=`<div class="cert"><div class="medal">${score>=10?"🏅":score>=7?"🥈":"🌱"}</div><h3>${score>=10?"Wastewater Detective, gold level!":score>=7?"Great job, Wastewater Detective!":"Good start, keep exploring!"}</h3><p class="big">You scored ${score} out of ${Q.length} (${p}%)</p><p>${score>=10?"You really understand the WVAL.":"Go back through the modules and try again. Practice makes perfect."}</p><button class="btn navy" id="retry">Try again</button> <a class="btn" href="#m1">Review modules</a></div>`;
+   $("#retry").onclick=()=>{i=0;score=0;show()};return}
+  const q=Q[i];box.innerHTML=`<span class="tag">Question ${i+1} of ${Q.length}</span><h3 style="margin-top:10px">${q[0]}</h3>`+q[1].map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")+`<div class="fb" id="qf"></div><p><button class="btn sm navy" id="qn" style="display:none">${i===Q.length-1?"See my score":"Next question ›"}</button></p>`;
+  $$("#quiz .opt").forEach(b=>b.onclick=()=>{const j=+b.dataset.j;$$("#quiz .opt").forEach(x=>x.disabled=true);
+   if(j===q[2]){score++;b.classList.add("ok")}else{b.classList.add("no");$(`#quiz .opt[data-j="${q[2]}"]`).classList.add("ok")}
+   const f=$("#qf");f.innerHTML=(j===q[2]?"<b>Correct!</b> ":"<b>Not quite.</b> ")+q[3];f.classList.add("show");$("#qn").style.display="inline-block";$("#qn").onclick=()=>{i++;show()}})}
+ show();
+})();
+
+/* ---------- listen (text to speech) ---------- */
+let speaking=null;
+$$(".listen").forEach(b=>{
+ if(!("speechSynthesis" in window)){b.style.display="none";return}
+ b.onclick=()=>{const synth=window.speechSynthesis;
+  if(speaking===b){synth.cancel();return}
+  synth.cancel();const sec=$("#"+b.dataset.say);const txt=$$(".say",sec).map(e=>e.innerText).join(" ")||sec.innerText;
+  const u=new SpeechSynthesisUtterance(txt.slice(0,3500));u.rate=.92;
+  u.onend=u.onerror=()=>{b.textContent="Listen";speaking=null};
+  speaking=b;b.textContent="Stop";
+  $$(".listen").forEach(x=>{if(x!==b)x.textContent="Listen"});synth.speak(u)}});
+
+/* ---------- scroll: progress, nav highlight, reveal ---------- */
+const links=$$("#nav a"),secs=links.map(a=>$(a.getAttribute("href"))),visited=new Set();
+function onScroll(){const h=document.documentElement,p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;$("#bar").style.width=p+"%";
+ let cur=-1;secs.forEach((s,i)=>{const r=s.getBoundingClientRect();if(r.top<innerHeight*.4)cur=i;if(r.bottom<innerHeight*.5)visited.add(i)});
+ links.forEach((a,i)=>{a.classList.toggle("on",i===cur);a.classList.toggle("done",visited.has(i))})}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.05});$$(".reveal").forEach(e=>io.observe(e))}
+else $$(".reveal").forEach(e=>e.classList.add("in"));
+})();
+</script>
+</body>
+</html>
